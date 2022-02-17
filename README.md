@@ -8,35 +8,17 @@ Total Question = 15
  https://github.com/walidshaari/Certified-Kubernetes-Security-Specialist
  https://github.com/kodekloudhub/certified-kubernetes-security-specialist-cks-course
  https://github.com/ggnanasekaran77/cks-exam-tips
- 
- ===========
- Praveen Github
- ===========
- https://github.com/sharmapravin1001/kubernetes-upgrade-cluster
- 
- =====================
- Tips for CKS Exam [Youtube video]
- =====================
- https://www.youtube.com/watch?v=W1eiMWGZwKo
- from user : ggnanasekaran77
- 
- 
- ===========
+
+
+
  Lab Practice:
- ===========
  [1] ACloudGuru Mock Lab [Go with 7 days trail [Hand-on-Labs search for "CKS" , there are 12 questions] --[Practice minimum 5 times]
  [2] kodekloud Lab --[Practice minimum 5 times]
  
+
  
- ====================================
- There is youtube video for solution
- ===================================
- serach for "CKS KodeKloud Mock Exam 1"
- 
- 
- ---------------
+
  Security in Kubernetes is based out on 4C concepts:
- ---------------
  [1] Cloud [DataCentre, Network, Services]
  [2] Cluster [Authentication, Autherization, Admission Controller, Network Policy, Ingress]
  [3] Container [Restrict Images, Supply Chain, Privileged Container, Sandboxing, docker] -Minimizing Microservice vulnerabilities 
