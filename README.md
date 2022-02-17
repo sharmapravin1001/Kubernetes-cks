@@ -36,13 +36,14 @@ Total Question = 15
  This includes all available language translations of these pages (e.g. https://kubernetes.io/zh/docs/)
  
  Tools:
+ 
  Trivy documentation https://aquasecurity.github.io/trivy/
  Sysdig documentation https://docs.sysdig.com/
  Falco documentation https://falco.org/docs/
  This includes all available language translations of these pages (e.g. https://falco.org/zh/docs/)
  App Armor:
  Documentation https://gitlab.com/apparmor/apparmor/-/wikis/Documentation
- ================================
+
  
  =============
  kube bench:
@@ -53,9 +54,9 @@ Total Question = 15
  
  
  
- ==========================<end><end><end><end><end><end><end><end><end>
- kubelet security <start>:
- ==========================
+ 
+ kubelet security :
+ 
  https://kodekloud.com/topic/kubelet-security/
  
  -- kubelet register the node, create pod and monitor node and pods 
