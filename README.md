@@ -19,6 +19,7 @@ Total Question = 15
  
 
  Security in Kubernetes is based out on 4C concepts:
+ 
  [1] Cloud [DataCentre, Network, Services]
  [2] Cluster [Authentication, Autherization, Admission Controller, Network Policy, Ingress]
  [3] Container [Restrict Images, Supply Chain, Privileged Container, Sandboxing, docker] -Minimizing Microservice vulnerabilities 
