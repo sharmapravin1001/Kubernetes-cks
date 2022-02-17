@@ -1,93 +1,74 @@
-Total Question = 15
- Exam Time = 2 hours
- 
- 
- 
- Refer the github recommendation for CKS exam :
- 
- https://github.com/walidshaari/Certified-Kubernetes-Security-Specialist
- https://github.com/kodekloudhub/certified-kubernetes-security-specialist-cks-course
- https://github.com/ggnanasekaran77/cks-exam-tips
+-------------------------
+About the Kubernetes CKS :
+--------------------------
 
-
-
- Lab Practice:
- [1] ACloudGuru Mock Lab [Go with 7 days trail [Hand-on-Labs search for "CKS" , there are 12 questions] --[Practice minimum 5 times]
- [2] kodekloud Lab --[Practice minimum 5 times]
+Total Question = 15, Exam Time = 2 hours
  
 
+`Security in Kubernetes is based out on 4C concepts:`
+
+1. Cloud     [DataCentre, Network, Services]
+2. Cluster   [Authentication, Authorization, Admission Controller, Network Policy, Ingress, RBAC, update kubernetes version fequently]
+3. Container [Supply Chain,Minimizing Microservice vulnerabilities ]
+   ``Supply Chain include (secure images), restrict Base images, remove privileged container,sandboxing (isolate container from OS kernel).``
+   ``Minimizing Microservice include vulnerabilities (Pod security policies, Open polic agent, security context, leverage secrets, container runtime (gvisor, kata containers), pod to pod encryption via mTLS(istio & linkerd)``
+4. Code      [Code Security best practices]
+
+  `During the CKS exam, folloing URL are allowed :`
+ 
+	
+`Kubernetes Documentation:` 
+
+1. https://kubernetes.io/docs/ and their subdomains
+2. https://github.com/kubernetes/ and their subdomains
+3. https://kubernetes.io/blog/ and their subdomains
+This includes all available language translations of these pages (e.g. https://kubernetes.io/zh/docs/)
+ 
+`Tools:`
+ 
+ 1. Trivy documentation https://aquasecurity.github.io/trivy/
+ 2. Sysdig documentation https://docs.sysdig.com/
+ 3. Falco documentation https://falco.org/docs/
+    -- This includes all available language translations of these pages (e.g. https://falco.org/zh/docs/)
+ 4. App Armor Documentation https://gitlab.com/apparmor/apparmor/-/wikis/Documentation
+
+ 
+----------------------------------
+ `CIS Benchmark [kube bench]:`
+
+ 1. kube bench is the tool from aqua security which check if the kuberenetes is deployed as per best security practices.
+ 2. kube bench can be deployed as docker container, pod in k8s cluster, installed as kube bench binaries , compile from source
  
 
- Security in Kubernetes is based out on 4C concepts:
- 
- [1] Cloud [DataCentre, Network, Services]
- [2] Cluster [Authentication, Autherization, Admission Controller, Network Policy, Ingress]
- [3] Container [Restrict Images, Supply Chain, Privileged Container, Sandboxing, docker] -Minimizing Microservice vulnerabilities 
- [4] Code [Code Security best practices]
-
- 
- 
- During the CKS exam, candidates may:
-
- Kubernetes Documentation: 
- https://kubernetes.io/docs/ and their subdomains
- https://github.com/kubernetes/ and their subdomains
- https://kubernetes.io/blog/ and their subdomains
- This includes all available language translations of these pages (e.g. https://kubernetes.io/zh/docs/)
- 
- Tools:
- 
- Trivy documentation https://aquasecurity.github.io/trivy/
- Sysdig documentation https://docs.sysdig.com/
- Falco documentation https://falco.org/docs/
- This includes all available language translations of these pages (e.g. https://falco.org/zh/docs/)
- App Armor:
- Documentation https://gitlab.com/apparmor/apparmor/-/wikis/Documentation
-
- 
- =============
- kube bench:
- ============= 
- kube bench is the tool from aqua security which check if the kuberenetes is deployed as per best security practices.
- 
- kube bench can be deployed as docker container, pod in k8s cluster, installed as kube bench binaries , compile from source
- 
- 
- 
- 
- kubelet security :
- 
- https://kodekloud.com/topic/kubelet-security/
- 
+`kubelet security :`
+ kubelet documentation: https://kodekloud.com/topic/kubelet-security/
  -- kubelet register the node, create pod and monitor node and pods 
  
- [1] Execue the following on the node to checkout the kublete configuration :
- # ps -aux|grep kubelet
- 
+ 1. Execue the following on the node to checkout the kublete configuration :
+ ps -aux|grep kubelet
  Grep the kubelet-config.yaml location and look out the following:
  -- /var/lib/kubelet/config.yaml [Kind: KubeletConfiguration]
  
- 
- [2] kubelet support 2 ports:
+ 2. kubelet support 2 ports:
  
  10250 - Serves API that allow full access [By default it allows but it can be changed].
  10255 - Serves API that allow unatenticated read-only access.
  
  There is big security risk, anyone know the IP address of host can run the following commands and get the information :
- # curl -sk https://localhost:10250/pods/
- # curl -sk https://localhost:10250/logs/syslog
- # curl -sk https://localhost:10255/metrics
+ #curl -sk https://localhost:10250/pods/
+ #curl -sk https://localhost:10250/logs/syslog
+ #curl -sk https://localhost:10255/metrics
  
- -----------------------------------------------------------
- |-- How to protect the kubelet behaviour to secure it ???? |
- ------------------------------------------------------------
+ ------------------------------------------------
+ How to protect the kubelet behaviour to secure it ???
+ ------------------------------------------------
  -- Generally for security there are 2 main pillars. Any request that come to kubelet first get authenticated and then authorized. 
  
  Authentication -- ensure if the user/request have access to the API
  Autherization -- what area that user have access and what they can perform 
  
  --------------------
- | [1] Authorization: |
+ [1] Authorization:
  --------------------
  Supported authentication methods :
  [a] Certificate[x509]
@@ -106,10 +87,10 @@ Total Question = 15
  anonymous:
  enabled: false
  After making the above changes, command to reach acces the pod from api, it will change to the following [ include the kublet client certificate configured in kube API server config file]
- # curl -sk https://localhost:10250/pods/ --key kubelet-key.pem --cert kubelet-cert.pem
+ #curl -sk https://localhost:10250/pods/ --key kubelet-key.pem --cert kubelet-cert.pem
  
  -------------------- 
- |[2] Authentication:|
+ [2] Authentication:
  --------------------
  Note: By default, kubelet allow all requests authenticated automatically. 
  To fix the security risk, edit the kubelet-config.yaml file and include the following:
@@ -122,15 +103,12 @@ Total Question = 15
  Kind: KubeletConfiguration
  readOnlyPort: 0
  
- ====================
- kubelet security <end>
- ====================
  
- 
- ============
+ ------------------
+ kubelet security
+ ------------------
  Ingress :
- ============
- 
+
  ----Practice Network Policy and Ingress again for CKS
  
  Ingress rewrites testing -- more info is available here 
@@ -138,31 +116,30 @@ Total Question = 15
  
  
  
- =========================
- docker configuration:
- =========================
- docker installation includes the running of docker daemon on /var/run/docker.sock (unix socket). The docker daemon runs on host where docker run and docker is accessible via docker cli.
+--------------------
+docker configuration:
+--------------------
+
+#docker installation includes the running of docker daemon on /var/run/docker.sock (unix socket). The docker daemon runs on host where docker run and docker is accessible via docker cli.
  
  If the docker host is server in located on cloud Or customer on-premises DC then you need to expose the docker daemon on docker ports 
  There are 2 docker ports that from which docker can be exposed so that end users from their laptop can access the docker tcp://host:port.
  
- docker ports are : 
+docker ports are : 
  2375 [unencrypted traffic] 
  2376 [encrypted traffic]
  
  Note: dockerd is method of starting the docker manually. Other ways of starting the docker as services as "systemctl start docker"
  
- dockerd --host=tcp://<docker-host-ip>:2375
+dockerd --host=tcp://<docker-host-ip>:2375
  
- # dockerd --debug=true --host=tcp://<docker-host-ip>:2376 tls=true tlscert=/var/docker/server.pem tlskey=/var/docker/serverkey.pem
+#dockerd --debug=true --host=tcp://<docker-host-ip>:2376 tls=true tlscert=/var/docker/server.pem tlskey=/var/docker/serverkey.pem
+Or 
+#dockerd 
  
- Or 
+Note: The above dockerd will work only if you have configured the configuration in yaml file located on /etc/docker/daemon.json [ dockerd looks for file in this location]
  
- # dockerd 
- 
- Note: The above dockerd will work only if you have configured the configuration in yaml file located on /etc/docker/daemon.json [ dockerd looks for file in this location]
- 
- --cat /etc/docker/daemon.json
+#cat /etc/docker/daemon.json
  {
  "debug"=true,
  "host"=[tcp://<docker-host-ip>:2376],
@@ -172,27 +149,27 @@ Total Question = 15
  "tlscert"=/var/docker/caserver.pem
  }
  
- --From the local laptop accessing the docker ,need to export the variable first 
- # export DOCKER_TLS_verify=true or [docker --tlsverify=true]
- # export DOCKER_HOST="tcp://<docker-host-ip>:2376"
- # docker --tlsverify=true --tlscert=/user/parvesha/client.pem --tlskey=/user/parvesha/clientkey.pem --tlscert=/user/parvesha/ca.cert ps
+ #From the local laptop accessing the docker ,need to export the variable first 
+ #export DOCKER_TLS_verify=true or [docker --tlsverify=true]
+ #export DOCKER_HOST="tcp://<docker-host-ip>:2376"
+ #docker --tlsverify=true --tlscert=/user/parvesha/client.pem --tlskey=/user/parvesha/clientkey.pem --tlscert=/user/parvesha/ca.cert ps
  
  Note: remember to create the client side and server side certificate along with ca certificate for end to end tls encryption.
  
- certificate argument while running the docker command from the local laptop can be avoided, if you copy the certificate to :
- # $HOME/.docker
- # ls
+ certificate argument while running the docker command from the local laptop can be avoided, if you copy the certificate to:
+ #$HOME/.docker
+ #ls
  clientkey.pem client.pem cacert.pem
- =========================================
  
  
  
- ====================
+ 
+-----------------
  System Hardening:
- ====================
+----------------
  
  ----------------------------
- --[1] Limit Node Access:
+ [1] Limit Node Access:
  ----------------------------
  
  /etc/passwd : contains username
@@ -200,10 +177,10 @@ Total Question = 15
  /etc/group : contains user group
  
  To check the details of user who logged in:
- # id
+ #id
  
  To check name of user logged in:
- # who
+ #who
  
  To check the list the last time users logged in to the system:
  #last
@@ -211,8 +188,8 @@ Total Question = 15
  ---------------------
  Based on above info, user can be disabled or deleted.
  ---------------------
- # usermod -s /bin/nologin parvesha
- # grep -i parvesha /etc/passwd
+ #usermod -s /bin/nologin parvesha
+ #grep -i parvesha /etc/passwd
  parvesha:x:1001:1001:/home/parvesha:/bin/nologin
  
  Or 
@@ -221,13 +198,13 @@ Total Question = 15
  ----------------
  If the user has been assigned to multiple group:
  ----------------
- # id parvesha
+ #id parvesha
  uid=1001(parvesha) gid=1001(parvesha) groups=1001(parvesha),1000(admin)
  
- # deluser parvesha admin
+ #deluser parvesha admin
  Removing user parvesha from group 'admin'
  
- # id parvesha
+ #id parvesha
  uid=1001(parvesha) gid=1001(parvesha) groups=1001(parvesha)
  --------------------------------
  
@@ -238,24 +215,25 @@ Total Question = 15
  ---------------
  --To load the kernel modules: 
  ---------------
- # modprobe <module name> 
+ #modprobe <module name> 
  e.g.
- # modprobe pcspkr
+ #modprobe pcspkr
  ---------------
  
  ---------------
- --To list all the modules loaded into the kernel on the host/node
+ To list all the modules loaded into the kernel on the host/node
  ---------------
  #lsmod
  ---------------
  
  ---------------
- --To blacklist the module which are not in used, create conf file of any name inside below path
+ To blacklist the module which are not in used, create conf file of any name inside below path
  ---------------
+ 
  blacklist.conf is just custom name, you can choose any name but path/location has to be same [/etc/modprobe.d]
  
  for e.g , we are blacklisting the sctp module
- # cat /etc/modprobe.d/blacklist.conf
+ #cat /etc/modprobe.d/blacklist.conf
  blacklist sctp
  
  Restart the node/host to ensure that it doesn appear in "lsmod" output
@@ -265,9 +243,9 @@ Total Question = 15
  
  
  
- =============================
+----------------------------
  Identify and Disabled the open ports which are not in used :
- =============================
+----------------------------
  [1] Grep the port using netstat an |grep LISTEN
  
  [2] Check the services running on the host , usually they are on /etc/services and grep the port you got it from above netstat command
@@ -275,9 +253,9 @@ Total Question = 15
  =============================
  
  
- =============================
+------------------------------
  Firewall in linux managed with the following :
- =============================
+-----------------------------
  [1] iptables 
  [2] ufw 
  
@@ -288,17 +266,17 @@ Total Question = 15
  ufw is simple and easy interface to apply the firewall rules 
  
  start with following 
- - Use netstat to look out for the port which are listening.
- # netstat -an|grep -w LISTEN
+ --Use netstat to look out for the port which are listening.
+ #netstat -an|grep -w LISTEN
  tcp 0 0.0.0.0:22 0.0.0.0:* LISTEN
  tcp 0 0.0.0.0:80 0.0.0.0:* LISTEN
  tcp 0 0.0.0.0:8080 0.0.0.0:* LISTEN
  
  Considering above, we just need ssh[22] and http[80] port to be only port to be allowed, port 8080 should be blocked.
- # apt update 
- # apt install ufw
- # systemctl enable ufw
- # ufw status 
+ #apt update 
+ #apt install ufw
+ #systemctl enable ufw
+ #ufw status 
  Status: Inactive 
  
  #Define default rule, considering there are no restrication for outpgoing on your app server, its only incoming port 80,22 should be allowed.
@@ -309,12 +287,12 @@ Total Question = 15
  - Allowing the incoming connection from jump server[IP=172.16.238.5 ] on app server 
  #ufw allow from 172.16.238.5 to any port 22 proto tcp
  #ufw allow from 172.16.238.5 to any port 80 proto tcp
- # ufw deny 8080
- # ufw enable [make sure all rules are added]
- # ufw status 
- # ufw delete deny 8080 
+ #ufw deny 8080
+ #ufw enable [make sure all rules are added]
+ #ufw status 
+ #ufw delete deny 8080 
  
- # ufw status 
+ #ufw status 
  Status: active
  To Action From
  --- --------- -------------
@@ -322,7 +300,7 @@ Total Question = 15
  80/tcp Allow 172.16.238.5 -->2
  8080 Deny Anywhere -->3
  
- # ufw delete 3
+ #ufw delete 3
  Deleting deny 8080 
  Proceed with operation (y|n) ?
  
@@ -332,17 +310,17 @@ Total Question = 15
  2. Setup the firewall rules for services.
  3. systemctl enabled ufw
  
- # systemctl ufw status
+ #systemctl ufw status
  =============================
  
  
- ===========================
+-------------------------------
  seccomp in kubernetes/docker:
- ===========================
+-------------------------------
  First , to trace the system call, linux has tool called strace.
- for e.g. 
- # strace touch /tmp/abc.log
- # strace -c touch /tmp/abc.log 
+ #for e.g. 
+ #strace touch /tmp/abc.log
+ #strace -c touch /tmp/abc.log 
  
  
  seccomp = secure computing 
@@ -415,7 +393,7 @@ Total Question = 15
  }
  
  
- -- In kubernetes pod file [include the seccomp as shown below]:
+ --In kubernetes pod file [include the seccomp as shown below]:
  
  apiVersion: v1
  kind: Pod 
@@ -454,9 +432,9 @@ Total Question = 15
  
  
  
- ==========
+---------------
  tracee :
- ==========
+---------------
  Use tracee tool to analyze the system call made by any newly container 
  
  docker run --name tracee --rm --privileged -pid=host -v /lib/modules:/lib/modules/:ro -v /usr/src:/usr/src:ro -v /tmp/tracee:/tmp/tracee aquasec/tracee:4.0 -trace container=new
@@ -476,15 +454,15 @@ Total Question = 15
  AppArmor is linux based feature used to limit/control the resource usage by program allowing the profile which are more granular than seccomp.
  
  -- To check if the apparmor module is loaded to kernel :
- # cat /sys/modules/apparmor/parameters/enabled
+ #cat /sys/modules/apparmor/parameters/enabled
  Y
  
  -- To check the apparmor profile is loaded in the kernel
- # cat /sys/kernel/security/apparmor/profiles
+ #cat /sys/kernel/security/apparmor/profiles
  /sbin/dhclient (enforce)
  /usr/sbin/ntpd (enforce)
  
- # aa-status -- to check the status of aa profile
+ #aa-status -- to check the status of aa profile
  
  --How to create AppArmor profile (name=apparmor-deny-write) which has rule to all access to entire file system but deny write access root file system
  profile apparmor-deny-write flags=(attach_disconnected) 
@@ -503,16 +481,16 @@ Total Question = 15
  Installation of AppArmor tools:
  --------------------
  
- # apt install apparmor-utils
- # aa-genprof /root/add_data.sh
+ #apt install apparmor-utils
+ #aa-genprof /root/add_data.sh
  
- # apparmor_parser /etc/apparmor.d/root.add_data.sh
+ #apparmor_parser /etc/apparmor.d/root.add_data.sh
  #
  If the above apparmor_parser returned nothing then profile is sucessfully loaded.
  
  To disable the same profile 
- # apparmor_parser -R /etc/apparmor.d/root.add_data.sh
- # ln -s /etc/apparmor.d/root.add_data.sh /etc/apparmor.d/disable
+ #apparmor_parser -R /etc/apparmor.d/root.add_data.sh
+ #ln -s /etc/apparmor.d/root.add_data.sh /etc/apparmor.d/disable
  =============================
  
  --How to create AppArmor profile (name=apparmor-deny-write) which has rule to all access to entire file system but deny write access root file system
@@ -526,12 +504,12 @@ Total Question = 15
  How to setup the AppArmor in kubernetes pod:
  -------------------
  [1] Enable the AppArmor kernel module on host
- # systemctl status apparmor
- # systemctl enable apparmor
- # systemctl start apparmor
+ #systemctl status apparmor
+ #systemctl enable apparmor
+ #systemctl start apparmor
  
  [2] Load the AppArmor profile in kernel on the host[Profile name = apparmor-deny-write created with syntax shown above]
- # apparmor_parser /etc/apparmor.d/apparmor-deny-write
+ #apparmor_parser /etc/apparmor.d/apparmor-deny-write
  
  
  [3] aa-status on the host [Check the AppArmor profile status]
@@ -555,9 +533,9 @@ Total Question = 15
  =============================
  
  
- =============================
+----------------------
  Linux capabilities :
- =============================
+----------------------
  Process which have provilege to carry the super user task which can bypass the kernel has been categorized as capabilities.
  for e.g 
  
@@ -568,7 +546,7 @@ Total Question = 15
  etc 
  
  -- To check which process has been inherting its capabilities , run the getcap command 
- # getcap /usr/bin/ping
+ #getcap /usr/bin/ping
  /usr/bin/ping = cap_net_rw+ep
  
  -----------------
@@ -588,9 +566,9 @@ Total Question = 15
  =============================
  
  
- =======================
+----------------------
  Container Sandboxing:
- =======================
+----------------------
  
  First understand the diff between application running on container making system call to kernel and application running on virtual machine making system call to kernel. 
  
@@ -617,9 +595,9 @@ Total Question = 15
  
  ========================
  
- ==================
+--------------------
  kata Containers:
- ================== 
+--------------------- 
  
  Kata containers takes the diff apprach to gVisor. kata expose the container to be run in its own virtual machine which mean each container get their own dedicated kernel.
  It is indeed safer appraoch to proctect from the vulnerabilities as containers are not going to make system call to same OS kernel rather each container will get its own 
@@ -630,9 +608,9 @@ Total Question = 15
  use of kata conatiners as performance will be affected on multi tenant cloud architecture. Google Cloud nested virtualization should be enabled manually.
  
  
- =========================
+---------------------------
  Pod to Pod encryption in kubernetes [Istio and Linkerd]:
- =========================
+---------------------------
  
  By default one Pod to another pod communication is unencrypted. If the one of the pod is compromized then it will become vulnerable and prone to attack.
  
@@ -659,10 +637,9 @@ Total Question = 15
  [2] Enforced/Strict [Communication within the cluster only]
  =========================================
  
- 
- ===================================================
+----------------------------------------------------
  Image Security and minimize the base image footprint :
- ===================================================
+-----------------------------------------------------
  [1] Always pull the images from docker hub or other repo which has got official tag. Also, ensure they are update recently. 
  [2] Ensure separate images are pulled for Application ,db , proxy server. 
  [3] Ensure images has minimal packages installed. Ensure they don't have package manager,shells,network tools,text editors,other unwanted packages. 
@@ -682,9 +659,9 @@ Total Question = 15
  [7] USe the multi stage builds create lean production ready images.
  ========================================
  
- ==================================
+----------------------------------------
  Static Analysis of user workload [or kubernetes manifest file] via kubesec tool: 
- ==================================
+----------------------------------------
  kubesec can scan deployment, ds, pod,replicasets etc and provide score after analyzes for adminstrator to review 
  
  for e.g. to analyze the pod manifest before they go for authentication/autherization
@@ -698,19 +675,19 @@ Total Question = 15
  Methods to install the kebesec :
  ----------------
  [1] kubesec can be installed as binary locally and run as kubesec 
- # kubesec scan pod.yaml [pod.yaml file need to be analyzed]
+ #kubesec scan pod.yaml [pod.yaml file need to be analyzed]
  
  [2] Kubesec casn be invoked online over the internet 
- # curl -sSX POST --data-binary @"pod.yaml" https://kubesec.io/scan
+ #curl -sSX POST --data-binary @"pod.yaml" https://kubesec.io/scan
  
  [3] This will kubesec locally as http server 
- # kubesec https 8080 & 
+ #kubesec https 8080 & 
  
  ==============================
  
- =====================================
+----------------------------------------
  CVE Scanner for image vulnerabilities [CVE]:
- =====================================
+---------------------------------------
  CVE = Common vulnerabilities and exposure 
  
  CVE maintain the record of all the known bugs and its a database which hold all sorts of bugs related to images. Its central db and eveyone submit their record of bugs. All enterprise
@@ -720,19 +697,19 @@ Total Question = 15
  
  -- trivy is tools to scan the image for vulnerabilities.
  
- # trivy image nginx:1.18.0
+ #trivy image nginx:1.18.0
  
  The above "trivy scan" return the CVE "vulnerabilities ID" [e.g. CVE-2011-3374] which can be looked into the CVE site for more details. It also provide the information about the library /module and more informationinside the TITLE section.
  
- # trivy image --severity CRITICAL nginx:1.18.0
- # trivy image --severity CRITICAL,HIGH nginx:1.18.0
+ #trivy image --severity CRITICAL nginx:1.18.0
+ #trivy image --severity CRITICAL,HIGH nginx:1.18.0
  
  trivy from aquasecurity
  ==========================
  
- ================
+---------------
  Best practices for Images scanning to avoid/minimze the vulnerabilities:
- ================
+-----------------
  [1] Continously rescan your images.
  [2] Kubernetes Admission COntroller to scan images
  [3] Have your own private repository with pre-scanned images ready to go 
@@ -744,9 +721,9 @@ Total Question = 15
  Astra Theme, and then searc hfor plugin with the name ConeBlog [Another plugin - Elementor Header and Footer]
  https://www.youtube.com/watch?v=vXkaJaj6UYU [Follow the youtube vide to create blogin site free from wordpress]
  
- ==================================== 
+------------------------------
  Monitoring Logging And Runtime Security [Falco] :
- ====================================
+-----------------------------
  Falco [company name : sysdig] -- Its tool to detect threat and analze logs. Falco does the behavioral analytics of syscall process.
  Falco is the open source standard tool for continuous risk and threat detection across Kubernetes, containers and cloud. 
  
@@ -783,7 +760,7 @@ Total Question = 15
  Falco Configuration:
  ----------------
  To check the logs of 
- # journalctl -u falco 
+ #journalctl -u falco 
  
  
  ------------------------------------
@@ -810,9 +787,9 @@ Total Question = 15
  ---------------------------
  File which conatine all the rules :
  ---------------------------
- # cat /etc/falco/falco_rules.yaml [ This is file falco read by default to load the rules] 
+ #cat /etc/falco/falco_rules.yaml [ This is file falco read by default to load the rules] 
  
- # /etc/falco/falco_rules.local.yaml [Use this file to make changes to any falco rules as this file will override the default file[falco_rules.yaml]. 
+ #/etc/falco/falco_rules.local.yaml [Use this file to make changes to any falco rules as this file will override the default file[falco_rules.yaml]. 
  
  
  -------------
@@ -829,9 +806,10 @@ Total Question = 15
  ======================
  
  
- ============================
+------------------------------
  Mutable va immutable infrastructure :
- ============================
+ ----------------------------
+ 
  
  -- Always ensure the immutability during their runtime of container else they become vulnerable.
  
@@ -897,9 +875,9 @@ Total Question = 15
  =================================
  
  
- =================== 
+-------------------------- 
  Kubernetes Auditing log [ Event] :
- ===================
+-------------------------
  
  What are events in kuberenetes ? 
  
@@ -910,9 +888,9 @@ Total Question = 15
  By default auditing of events is provided by kube-api server but its not get enabled by default. Every request pass through the kube-api server so kube-api server 
  keep record of it in form of events. If you need auditing then enable the auditing as shon below
  
- ===================
+---------------------
  Events are created at 4 stages:
- ===================
+--------------------
  1. RequestRecieved [RR]
  2. ResponseStarted [RS]
  3. ResponseComplete [RC]
@@ -935,10 +913,10 @@ Total Question = 15
  ----------
  audit-policy.conf [Location = /etc/kuberenetes/audit-policy.conf] we create the audit policy as per specific need
  ----------
- # Don't generate audit events for all requests in RequestReceived stage.
+ #Don't generate audit events for all requests in RequestReceived stage.
  
  
- # cat /etc/kuberenetes/audit-policy.conf
+ #cat /etc/kuberenetes/audit-policy.conf
  
  apiVersion: audit.k8s.io/v1 # This is required.
  kind: Policy
@@ -981,7 +959,7 @@ Total Question = 15
  [3] Update the pod or resource with the above information for which you enabled auditing [ for e.g . to include the volum and volume to have the reference of your audi logs]
  
  Note : highest level of verbosity where you get the max information , set the level: RequestResponse
- =================================
+------------------------------
  
  
  
