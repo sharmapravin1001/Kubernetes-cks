@@ -24,11 +24,11 @@ Total Question = 15
  [2] Cluster [Authentication, Autherization, Admission Controller, Network Policy, Ingress]
  [3] Container [Restrict Images, Supply Chain, Privileged Container, Sandboxing, docker] -Minimizing Microservice vulnerabilities 
  [4] Code [Code Security best practices]
- ================================
+
  
- ================================
+ 
  During the CKS exam, candidates may:
- ================================
+
  Kubernetes Documentation: 
  https://kubernetes.io/docs/ and their subdomains
  https://github.com/kubernetes/ and their subdomains
